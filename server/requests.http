@@ -1,0 +1,52 @@
+### Llistar comandes
+GET http://localhost:3000/api/orders
+
+### Veure una comanda
+GET http://localhost:3000/api/orders/1
+
+### Crear una comanda (correcta)
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "Laia Ferrer",
+  "contact": "laia@exemple.com",
+  "address": "Carrer de Provença 200, Barcelona",
+  "lat": 41.3935,
+  "lng": 2.1601,
+  "deliveryDate": "2026-12-20T12:00:00",
+  "category": "pastis",
+  "description": "Pastís de formatge",
+  "total": 30
+}
+
+### Crear una comanda (amb errors: ha de retornar 400)
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+  "customerName": "",
+  "lat": 200,
+  "category": "pizza",
+  "total": -5
+}
+
+### Editar una comanda
+PUT http://localhost:3000/api/orders/1
+Content-Type: application/json
+
+{
+  "customerName": "Marta Vidal",
+  "contact": "marta@exemple.com",
+  "address": "Carrer de Mallorca 401, Barcelona",
+  "lat": 41.4036,
+  "lng": 2.1744,
+  "deliveryDate": "2026-10-15T17:00:00",
+  "category": "pastis",
+  "description": "Pastís de xocolata per a 8 persones",
+  "total": 38,
+  "status": "llesta"
+}
+
+### Eliminar una comanda
+DELETE http://localhost:3000/api/orders/2
