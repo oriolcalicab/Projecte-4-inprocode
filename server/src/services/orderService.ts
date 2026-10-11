@@ -1,36 +1,27 @@
-import { randomUUID } from "node:crypto";
-import { mockOrders } from "../data/mockOrders";
-import { Order, OrderData } from "../types/order";
+import { isValidObjectId } from "mongoose";
+import { OrderModel } from "../models/orderModel";
+import type { OrderData } from "../types/order";
 
-
-let orders: Order[] = [...mockOrders]
-
-export async function getAllOrders():Promise<Order[]> {
-    return orders    
+export async function getAllOrders() {
+  return OrderModel.find().sort({ deliveryDate: 1 });
 }
 
-export async function getOrderById(id:string): Promise<Order | undefined> {
-    return orders.find((order) => order.id === id)    
+export async function getOrderById(id: string) {
+  if (!isValidObjectId(id)) return null;
+  return OrderModel.findById(id);
 }
 
-
-export async function createOrder(data: OrderData): Promise<Order> {
-  const order: Order = { id: randomUUID(), ...data };
-  orders.push(order);
-  return order;
+export async function createOrder(data: OrderData) {
+  return OrderModel.create(data);
 }
 
-export async function updateOrder(id: string, data: OrderData): Promise<Order | undefined> {
-  const index = orders.findIndex((order) => order.id === id);
-  if (index === -1) return undefined;
-
-  orders[index] = { id, ...data };
-  return orders[index];
+export async function updateOrder(id: string, data: OrderData) {
+  if (!isValidObjectId(id)) return null;
+  return OrderModel.findByIdAndUpdate(id, data, { new: true, runValidators: true });
 }
-
 
 export async function deleteOrder(id: string): Promise<boolean> {
-  const before = orders.length;
-  orders = orders.filter((order) => order.id !== id);
-  return orders.length < before;
+  if (!isValidObjectId(id)) return false;
+  const deleted = await OrderModel.findByIdAndDelete(id);
+  return deleted !== null;
 }
