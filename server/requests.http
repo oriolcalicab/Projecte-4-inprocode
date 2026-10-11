@@ -1,8 +1,10 @@
+@id = enganxa-aqui-un-id-de-la-llista
+
 ### Llistar comandes
 GET http://localhost:3000/api/orders
 
 ### Veure una comanda
-GET http://localhost:3000/api/orders/1
+GET http://localhost:3000/api/orders/{{id}}
 
 ### Crear una comanda (correcta)
 POST http://localhost:3000/api/orders
