@@ -1,14 +1,33 @@
+### Obtenir un token de Firebase (envia aquesta petició primer)
+# @name login
+POST https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{$dotenv FIREBASE_WEB_API_KEY}}
+Content-Type: application/json
+
+{
+  "email": "{{$dotenv TEST_EMAIL}}",
+  "password": "{{$dotenv TEST_PASSWORD}}",
+  "returnSecureToken": true
+}
+
+###
+@token = {{login.response.body.$.idToken}}
+
 @id = enganxa-aqui-un-id-de-la-llista
 
 ### Llistar comandes
 GET http://localhost:3000/api/orders
+Authorization: Bearer {{token}}
 
 ### Veure una comanda
 GET http://localhost:3000/api/orders/{{id}}
 
+### Sense token (ha de donar 401)
+GET http://localhost:3000/api/orders
+
 ### Crear una comanda (correcta)
 POST http://localhost:3000/api/orders
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "customerName": "Laia Ferrer",

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import ordersRouter from "./routes/orders";
+import { requireAuth } from "./middleware/authMiddleware";
 
 const app = express();
 
@@ -11,6 +12,6 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-app.use("/api/orders", ordersRouter)
+app.use("/api/orders" , requireAuth, ordersRouter)
 
 export default app;
